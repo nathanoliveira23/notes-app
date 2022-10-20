@@ -25,7 +25,7 @@ namespace Notes.Controllers
                 {
                     Name = userDTO.Name,
                     Email = userDTO.Email,
-                    Password = userDTO.Password
+                    Password = Encrypt.EncryptPassword(userDTO.Password)
                 };
 
                 return Ok(user);
