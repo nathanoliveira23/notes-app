@@ -20,7 +20,7 @@ namespace Notes.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateUser(UserDTO userDTO)
+        public IActionResult CreateUser(UserDTO userDTO)
         {
             try
             {
