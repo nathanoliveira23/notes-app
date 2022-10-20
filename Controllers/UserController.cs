@@ -38,7 +38,18 @@ namespace Notes.Controllers
                     Password = Encrypt.EncryptPassword(userDTO.Password)
                 };
 
-                _userRepository.SaveUser(user);
+                if (!_userRepository.EmailVerify(userDTO.Email))
+                {
+                    _userRepository.SaveUser(user);
+                }
+                else
+                {
+                    return BadRequest(new AppError()
+                    {
+                        Message = "O E-mail informado já existe.",
+                        Status = StatusCodes.Status400BadRequest
+                    });
+                }
 
                 return Ok(user);
             }

@@ -9,6 +9,11 @@ namespace Notes.Repository.Implements
 
     public UserRepository(NotesDbContext context) => _context = context;
 
+    public bool EmailVerify(string email)
+    {
+        return _context.Users.Any(x => x.Email == email);
+    }
+
     public async void SaveUser(User user)
     {
         await _context.Users.AddAsync(user);
