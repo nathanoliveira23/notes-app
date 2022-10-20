@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Notes.DTOs.UserDTOs;
 using Notes.Models;
+using Notes.Repository;
 using Notes.Utils;
 
 namespace Notes.Controllers
@@ -10,10 +11,12 @@ namespace Notes.Controllers
     public class UserController : ControllerBase
     {
         private readonly ILogger<UserController> _logger;
+        private readonly IUserRepository _userRepository;
 
-        public UserController(ILogger<UserController> logger)
+        public UserController(ILogger<UserController> logger, IUserRepository userRepository)
         {
             _logger = logger;
+            _userRepository = userRepository;
         }
 
         [HttpPost]
@@ -21,12 +24,21 @@ namespace Notes.Controllers
         {
             try
             {
+                if (userDTO.Email.Contains(" "))
+                    return BadRequest(new AppError()
+                    {
+                        Message = "O E-mail não pode ter espaços em branco.",
+                        Status = StatusCodes.Status400BadRequest
+                    });
+
                 User user = new()
                 {
                     Name = userDTO.Name,
-                    Email = userDTO.Email,
+                    Email = userDTO.Email.ToLower(),
                     Password = Encrypt.EncryptPassword(userDTO.Password)
                 };
+
+                _userRepository.SaveUser(user);
 
                 return Ok(user);
             }

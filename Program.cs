@@ -1,10 +1,14 @@
 using Microsoft.EntityFrameworkCore;
 using Notes.Data;
+using Notes.Repository;
+using Notes.Repository.Implements;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddDbContext<NotesDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("Default")));
+
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
