@@ -63,5 +63,19 @@ namespace Notes.Controllers
                 });
             }
         }
+
+        [HttpGet("{id}")]
+        public IActionResult GetUserById(int id)
+        {
+            var userId = _userRepository.GetUserId(id);
+            
+            return userId != null 
+                ? Ok(userId)
+                : BadRequest(new AppError()
+                {
+                    Message = "Usuário não encontrado.",
+                    Status = StatusCodes.Status400BadRequest
+                });
+        }
     }
 }

@@ -14,6 +14,11 @@ namespace Notes.Repository.Implements
         return _context.Users.Any(x => x.Email == email);
     }
 
+    public User GetUserId(int id)
+    {
+        return _context.Users.FirstOrDefault(x => x.Id == id);
+    }
+
     public async void SaveUser(User user)
     {
         await _context.Users.AddAsync(user);
