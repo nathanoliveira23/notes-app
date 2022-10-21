@@ -25,11 +25,7 @@ namespace Notes.Controllers
             try
             {
                 if (userDTO.Email.Contains(" "))
-                    return BadRequest(new AppError()
-                    {
-                        Message = "O E-mail não pode ter espaços em branco.",
-                        Status = StatusCodes.Status400BadRequest
-                    });
+                    return BadRequest(new AppError("O E-mail não pode ter espaços em branco."));
 
                 User user = new()
                 {
@@ -44,11 +40,7 @@ namespace Notes.Controllers
                 }
                 else
                 {
-                    return BadRequest(new AppError()
-                    {
-                        Message = "O E-mail informado já existe.",
-                        Status = StatusCodes.Status400BadRequest
-                    });
+                    return BadRequest(new AppError("O E-mail informado já existe."));
                 }
 
                 return CreatedAtAction(nameof(GetUserById), new { id = user.Id }, user);
@@ -73,11 +65,7 @@ namespace Notes.Controllers
             
                 return userId != null 
                     ? Ok(userId)
-                    : BadRequest(new AppError()
-                    {
-                        Message = "Usuário não encontrado.",
-                        Status = StatusCodes.Status400BadRequest
-                    });
+                    : BadRequest(new AppError("Usuário não encontrado."));
             }
             catch (Exception ex)
             {
@@ -103,11 +91,7 @@ namespace Notes.Controllers
                 }
                 else
                 {
-                    BadRequest(new AppError()
-                    {
-                        Message = "Usuário não encontrado.",
-                        Status = StatusCodes.Status400BadRequest
-                    });
+                    BadRequest(new AppError("Usuário não encontrado."));
                 }
 
                 return NoContent();
@@ -131,18 +115,14 @@ namespace Notes.Controllers
                 User dbUserId = _userRepository.GetUserId(id);
 
                 if (dbUserId == null)
-                    return BadRequest(new AppError()
-                    {
-                        Message = "Usuário não encontrado.",
-                        Status = StatusCodes.Status400BadRequest
-                    });
+                    return BadRequest(new AppError("Usuário não encontrado."));
 
                 dbUserId.Name = userUpdateDTO.Name;
                 dbUserId.Email = userUpdateDTO.Email;
                 dbUserId.UpdatedAt = DateTime.Now;
 
                 if (userUpdateDTO.Password == userUpdateDTO.NewPassword)
-                    return BadRequest("A nova senha não pode ser igual a anterior.");
+                    return BadRequest(new AppError("A nova senha não pode ser igual a anterior."));
                 
                 dbUserId.Password = Encrypt.EncryptPassword(userUpdateDTO.NewPassword);
 
