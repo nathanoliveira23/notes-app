@@ -51,7 +51,7 @@ namespace Notes.Controllers
                     });
                 }
 
-                return Ok(user);
+                return CreatedAtAction(nameof(GetUserById), new { id = user.Id }, user);
             }
             catch (Exception ex)
             {
@@ -67,15 +67,27 @@ namespace Notes.Controllers
         [HttpGet("{id}")]
         public IActionResult GetUserById(int id)
         {
-            var userId = _userRepository.GetUserId(id);
+            try
+            {
+                var userId = _userRepository.GetUserId(id);
             
-            return userId != null 
-                ? Ok(userId)
-                : BadRequest(new AppError()
+                return userId != null 
+                    ? Ok(userId)
+                    : BadRequest(new AppError()
+                    {
+                        Message = "Usuário não encontrado.",
+                        Status = StatusCodes.Status400BadRequest
+                    });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Ocorreu um erro durante a busca do usuário: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, new AppError()
                 {
-                    Message = "Usuário não encontrado.",
-                    Status = StatusCodes.Status400BadRequest
+                    Message = "Ocorreu um erro ao buscar o usuário",
+                    Status = StatusCodes.Status500InternalServerError
                 });
+            }
         }
     }
 }
