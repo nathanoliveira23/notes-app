@@ -9,6 +9,12 @@ namespace Notes.Repository.Implements
 
     public UserRepository(NotesDbContext context) => _context = context;
 
+    public async void Delete(User user)
+    {
+        _context.Users.Remove(user);
+        await _context.SaveChangesAsync();
+    }
+
     public bool EmailVerify(string email)
     {
         return _context.Users.Any(x => x.Email == email);

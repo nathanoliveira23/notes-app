@@ -7,5 +7,6 @@ namespace Notes.Repository
         public void SaveUser(User user);
         public bool EmailVerify(string email);
         public User GetUserId(int id);
+        public void Delete(User user);
     }
 }

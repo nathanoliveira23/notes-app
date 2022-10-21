@@ -89,5 +89,38 @@ namespace Notes.Controllers
                 });
             }
         }
+
+        [HttpDelete("delete/{id}")]
+        public IActionResult DeleteUser(int id)
+        {
+            try
+            {
+                User userId = _userRepository.GetUserId(id);
+
+                if (userId != null)
+                {
+                    _userRepository.Delete(userId);
+                }
+                else
+                {
+                    BadRequest(new AppError()
+                    {
+                        Message = "Usuário não encontrado.",
+                        Status = StatusCodes.Status400BadRequest
+                    });
+                }
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Ocorreu um erro durante a remoção do usuário: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, new AppError()
+                {
+                    Message = "Ocorreu um erro ao deletar o usuário",
+                    Status = StatusCodes.Status500InternalServerError
+                });
+            }
+        }
     }
 }
