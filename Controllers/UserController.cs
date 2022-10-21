@@ -124,6 +124,9 @@ namespace Notes.Controllers
                 if (userUpdateDTO.Password == userUpdateDTO.NewPassword)
                     return BadRequest(new AppError("A nova senha não pode ser igual a anterior."));
                 
+                if (userUpdateDTO.Password != dbUserId.Password)
+                    return BadRequest(new AppError("A senha atual informada é diferente da que consta na base de dados."));
+
                 dbUserId.Password = Encrypt.EncryptPassword(userUpdateDTO.NewPassword);
 
                 _userRepository.Update(dbUserId);
