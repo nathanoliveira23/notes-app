@@ -122,5 +122,43 @@ namespace Notes.Controllers
                 });
             }
         }
+
+        [HttpPut("update/{id}")]
+        public IActionResult UpdateUser(UserUpdateDTO userUpdateDTO, int id)
+        {
+            try
+            {
+                User dbUserId = _userRepository.GetUserId(id);
+
+                if (dbUserId == null)
+                    return BadRequest(new AppError()
+                    {
+                        Message = "Usuário não encontrado.",
+                        Status = StatusCodes.Status400BadRequest
+                    });
+
+                dbUserId.Name = userUpdateDTO.Name;
+                dbUserId.Email = userUpdateDTO.Email;
+                dbUserId.UpdatedAt = DateTime.Now;
+
+                if (userUpdateDTO.Password == userUpdateDTO.NewPassword)
+                    return BadRequest("A nova senha não pode ser igual a anterior.");
+                
+                dbUserId.Password = Encrypt.EncryptPassword(userUpdateDTO.NewPassword);
+
+                _userRepository.Update(dbUserId);
+
+                return Ok(dbUserId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Ocorreu um erro durante a atualização do usuário: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, new AppError()
+                {
+                    Message = "Ocorreu um erro ao atualizar o usuário.",
+                    Status = StatusCodes.Status500InternalServerError
+                });
+            }
+        }
     }
 }

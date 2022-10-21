@@ -8,5 +8,6 @@ namespace Notes.Repository
         public bool EmailVerify(string email);
         public User GetUserId(int id);
         public void Delete(User user);
+        public void Update(User user);
     }
 }

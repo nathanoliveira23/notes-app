@@ -30,5 +30,11 @@ namespace Notes.Repository.Implements
         await _context.Users.AddAsync(user);
         await _context.SaveChangesAsync();
     }
+
+    public async void Update(User user)
+    {
+        _context.Users.Update(user);
+        _context.SaveChangesAsync();
+    }
   }
 }
