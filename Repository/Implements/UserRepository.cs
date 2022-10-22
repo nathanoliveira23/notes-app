@@ -25,6 +25,11 @@ namespace Notes.Repository.Implements
         return _context.Users.FirstOrDefault(x => x.Id == id);
     }
 
+    public User GetUserLogin(string email, string password)
+    {
+        return _context.Users.FirstOrDefault(user => user.Email == email && user.Password == password);
+    }
+
     public async void SaveUser(User user)
     {
         await _context.Users.AddAsync(user);
