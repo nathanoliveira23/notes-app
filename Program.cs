@@ -1,7 +1,11 @@
+using System.Text;
 using Microsoft.EntityFrameworkCore;
+using Notes;
 using Notes.Data;
 using Notes.Repository;
 using Notes.Repository.Implements;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +13,27 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<NotesDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("Default")));
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+// JWT Authentication config
+byte[] secretKeyBytes = Encoding.ASCII.GetBytes(JWTToken.secret_key);
+
+    builder.Services.AddAuthentication(auth => 
+    {
+        auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        auth.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(auth => 
+    {
+        auth.RequireHttpsMetadata = false;
+        auth.SaveToken = true;
+        auth.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(secretKeyBytes),
+            ValidateIssuer = false,
+            ValidateAudience = false,
+        };
+    });
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
