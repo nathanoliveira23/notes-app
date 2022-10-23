@@ -9,6 +9,8 @@ using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
+DotNetEnv.Env.Load(Path.Combine(Directory.GetCurrentDirectory(), ".env"));
+
 // Add services to the container.
 builder.Services.AddDbContext<NotesDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("Default")));
 
