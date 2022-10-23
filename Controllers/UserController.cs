@@ -3,23 +3,24 @@ using Notes.DTOs.UserDTOs;
 using Notes.Models;
 using Notes.Repository;
 using Notes.Utils;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Notes.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class UserController : ControllerBase
+    public class UserController : BaseController
     {
         private readonly ILogger<UserController> _logger;
-        private readonly IUserRepository _userRepository;
+   
 
-        public UserController(ILogger<UserController> logger, IUserRepository userRepository)
+        public UserController(ILogger<UserController> logger, IUserRepository userRepository) : base(userRepository)
         {
             _logger = logger;
-            _userRepository = userRepository;
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public IActionResult CreateUser(UserDTO userDTO)
         {
             try
@@ -56,12 +57,12 @@ namespace Notes.Controllers
             }
         }
 
-        [HttpGet("{id}")]
-        public IActionResult GetUserById(int id)
+        [HttpGet()]
+        public IActionResult GetUserById()
         {
             try
             {
-                var userId = _userRepository.GetUserId(id);
+                User userId = ReadToken();
             
                 return userId != null 
                     ? Ok(userId)
@@ -78,12 +79,12 @@ namespace Notes.Controllers
             }
         }
 
-        [HttpDelete("delete/{id}")]
-        public IActionResult DeleteUser(int id)
+        [HttpDelete("delete")]
+        public IActionResult DeleteUser()
         {
             try
             {
-                User userId = _userRepository.GetUserId(id);
+                User userId = ReadToken();
 
                 if (userId != null)
                 {
@@ -107,12 +108,12 @@ namespace Notes.Controllers
             }
         }
 
-        [HttpPut("update/{id}")]
+        [HttpPut("update")]
         public IActionResult UpdateUser(UserUpdateDTO userUpdateDTO, int id)
         {
             try
             {
-                User dbUserId = _userRepository.GetUserId(id);
+                User dbUserId = ReadToken();
 
                 if (dbUserId == null)
                     return BadRequest(new AppError("Usuário não encontrado."));

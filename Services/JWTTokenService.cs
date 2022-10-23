@@ -18,7 +18,8 @@ namespace Notes.Services
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Sid, user.Id.ToString())
+                    new Claim(ClaimTypes.Sid, user.Id.ToString()),
+                    new Claim(ClaimTypes.Name, user.Name)
                 }),
                 SigningCredentials = new SigningCredentials(
                     new SymmetricSecurityKey(secretKeyBytes),
