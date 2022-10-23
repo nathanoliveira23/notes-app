@@ -30,7 +30,7 @@ namespace Notes.Controllers
                 User userLogin = _userRepository.GetUserLogin(userLoginDTO.Email.ToLower(),
                                                             Encrypt.EncryptPassword(userLoginDTO.Password));
 
-                return Ok(new { userLogin.Email, userLogin.Password, token = JWTTokenService.CreateToken(userLogin) });
+                return Ok(new UserLoginResponseDTO(userLogin.Email, userLogin.Password, JWTTokenService.CreateToken(userLogin)));
             }
             catch (Exception ex)
             {
