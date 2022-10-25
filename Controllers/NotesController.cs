@@ -11,10 +11,18 @@ namespace Notes.Controllers
     public class NotesController : BaseController
     {
         private readonly INotesRepository _notesRepository;
+        private readonly ITagsRepository _tagsRepository;
+        private readonly ILinksRepository _linksRepository;
         private readonly ILogger<NotesController> _logger;
-        public NotesController(INotesRepository notesRepository, ILogger<NotesController> logger, IUserRepository userRepository) : base(userRepository)
+        public NotesController(INotesRepository notesRepository, 
+                        ILogger<NotesController> logger, 
+                        IUserRepository userRepository,
+                        ITagsRepository tagsRepository,
+                        ILinksRepository linksRepository) : base(userRepository)
         {
             _notesRepository = notesRepository;
+            _tagsRepository = tagsRepository;
+            _linksRepository = linksRepository;
             _logger = logger;
         }
 
@@ -24,16 +32,32 @@ namespace Notes.Controllers
             User user = ReadToken();
             try
             {
-                Note note = new()
-                {
-                   Title = createNoteDTO.Title,
-                   Description = createNoteDTO.Description,
-                   User = user
-                };
+                // Note note = new()
+                // {
+                //    Title = createNoteDTO.Title,
+                //    Description = createNoteDTO.Description,
+                //    User = user
+                // };
 
-                _notesRepository.Save(note);
+                // Tag tag = new()
+                // {
+                //     Name = createNoteDTO.Tags.ToString(),
+                //     User = user,
+                //     Note = _notesRepository.GetNoteId(note.Id),
+                // };
 
-                return Created(string.Empty, note);
+                // Link link = new()
+                // {
+                //     Note = _notesRepository.GetNoteId(note.Id),
+                //     Text = createNoteDTO.Links.ToString()
+                // };
+
+                // _notesRepository.SaveNote(note);
+                // _tagsRepository.SaveTag(tag);
+                // _linksRepository.SaveLink(link);
+
+                // return Created(string.Empty, note);
+                return Ok();
             }
             catch (Exception ex)
             {

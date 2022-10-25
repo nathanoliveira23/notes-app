@@ -4,6 +4,7 @@ namespace Notes.Repository
 {
     public interface INotesRepository
     {
-        public Task Save(Note note);
+        public Task SaveNote(Note note);
+        public Note GetNoteId(int id);
     }
 }

@@ -4,7 +4,5 @@ namespace Notes.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public Note Note { get; set; }
-        public User User { get; set; }
     }
 }

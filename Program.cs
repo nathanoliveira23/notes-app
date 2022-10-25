@@ -16,6 +16,8 @@ builder.Services.AddDbContext<NotesDbContext>(options => options.UseSqlite(build
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<INotesRepository, NotesRepository>();
+builder.Services.AddScoped<ITagsRepository, TagsRepository>();
+builder.Services.AddScoped<ILinksRepository, LinksRepository>();
 
 // JWT Authentication config
 byte[] secretKeyBytes = Encoding.ASCII.GetBytes(JWTToken.secret_key);

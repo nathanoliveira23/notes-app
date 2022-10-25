@@ -7,10 +7,17 @@ namespace Notes.Repository.Implements
   {
     private readonly NotesDbContext _context;
     public NotesRepository(NotesDbContext context) => _context = context;
-    public async Task Save(Note note)
+
+    public async Task SaveNote(Note note)
     {
         await _context.Notes.AddAsync(note);
         await _context.SaveChangesAsync();
     }
+
+    public Note GetNoteId(int id)
+    {
+        return _context.Notes.FirstOrDefault(x => x.Id == id);
+    }
+
   }
 }

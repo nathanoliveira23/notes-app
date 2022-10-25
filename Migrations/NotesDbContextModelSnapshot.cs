@@ -26,10 +26,10 @@ namespace Notes.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("NoteId")
+                    b.Property<int?>("NoteId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Text")
+                    b.Property<string>("Url")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -53,9 +53,6 @@ namespace Notes.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("FK_User_Id")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -63,9 +60,12 @@ namespace Notes.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("FK_User_Id");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Notes");
                 });
@@ -80,17 +80,12 @@ namespace Notes.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("NoteId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("UserId")
+                    b.Property<int?>("NoteId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
                     b.HasIndex("NoteId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Tags");
                 });
@@ -129,41 +124,34 @@ namespace Notes.Migrations
 
             modelBuilder.Entity("Notes.Models.Link", b =>
                 {
-                    b.HasOne("Notes.Models.Note", "Note")
-                        .WithMany()
-                        .HasForeignKey("NoteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Note");
+                    b.HasOne("Notes.Models.Note", null)
+                        .WithMany("Links")
+                        .HasForeignKey("NoteId");
                 });
 
             modelBuilder.Entity("Notes.Models.Note", b =>
                 {
                     b.HasOne("Notes.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("FK_User_Id");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("Notes.Models.Tag", b =>
                 {
-                    b.HasOne("Notes.Models.Note", "Note")
-                        .WithMany()
-                        .HasForeignKey("NoteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("Notes.Models.Note", null)
+                        .WithMany("Tags")
+                        .HasForeignKey("NoteId");
+                });
 
-                    b.HasOne("Notes.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+            modelBuilder.Entity("Notes.Models.Note", b =>
+                {
+                    b.Navigation("Links");
 
-                    b.Navigation("Note");
-
-                    b.Navigation("User");
+                    b.Navigation("Tags");
                 });
 #pragma warning restore 612, 618
         }
