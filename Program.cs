@@ -15,6 +15,7 @@ DotNetEnv.Env.Load(Path.Combine(Directory.GetCurrentDirectory(), ".env"));
 builder.Services.AddDbContext<NotesDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("Default")));
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<INotesRepository, NotesRepository>();
 
 // JWT Authentication config
 byte[] secretKeyBytes = Encoding.ASCII.GetBytes(JWTToken.secret_key);
