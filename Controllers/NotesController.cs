@@ -11,18 +11,12 @@ namespace Notes.Controllers
     public class NotesController : BaseController
     {
         private readonly INotesRepository _notesRepository;
-        private readonly ITagsRepository _tagsRepository;
-        private readonly ILinksRepository _linksRepository;
         private readonly ILogger<NotesController> _logger;
         public NotesController(INotesRepository notesRepository, 
                         ILogger<NotesController> logger, 
-                        IUserRepository userRepository,
-                        ITagsRepository tagsRepository,
-                        ILinksRepository linksRepository) : base(userRepository)
+                        IUserRepository userRepository) : base(userRepository)
         {
             _notesRepository = notesRepository;
-            _tagsRepository = tagsRepository;
-            _linksRepository = linksRepository;
             _logger = logger;
         }
 
@@ -32,6 +26,17 @@ namespace Notes.Controllers
             User user = ReadToken();
             try
             {
+                Note note = new()
+                {
+                    Title = createNoteDTO.Title,
+                    Description = createNoteDTO.Description,
+                    Tags = createNoteDTO.Tags,
+                    Links = createNoteDTO.Links,
+                    User = user,
+                };
+
+                _notesRepository.SaveNote(note);
+
                 // Note note = new()
                 // {
                 //    Title = createNoteDTO.Title,
@@ -57,7 +62,7 @@ namespace Notes.Controllers
                 // _linksRepository.SaveLink(link);
 
                 // return Created(string.Empty, note);
-                return Ok();
+                return Ok(note);
             }
             catch (Exception ex)
             {

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Notes.Migrations
 {
-    public partial class CreateTableNotesTagsLinks : Migration
+    public partial class CreateTablesNoteTagsLinks : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -36,8 +36,6 @@ namespace Notes.Migrations
                     Title = table.Column<string>(type: "TEXT", nullable: false),
                     Description = table.Column<string>(type: "TEXT", nullable: false),
                     UserId = table.Column<int>(type: "INTEGER", nullable: false),
-                    TagsId = table.Column<int>(type: "INTEGER", nullable: false),
-                    LinksId = table.Column<int>(type: "INTEGER", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
@@ -50,18 +48,6 @@ namespace Notes.Migrations
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Notes_Tags_TagsId",
-                        column: x => x.TagsId,
-                        principalTable: "Tags",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Notes_Links_UserId",
-                        column: x => x.LinksId,
-                        principalTable: "Links",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -72,10 +58,16 @@ namespace Notes.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Url = table.Column<string>(type: "TEXT", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    NoteId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Links", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Links_Notes_NoteId",
+                        column: x => x.NoteId,
+                        principalTable: "Notes",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -85,10 +77,16 @@ namespace Notes.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
+                    NoteId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tags", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Tags_Notes_NoteId",
+                        column: x => x.NoteId,
+                        principalTable: "Notes",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -117,6 +115,9 @@ namespace Notes.Migrations
 
             migrationBuilder.DropTable(
                 name: "Notes");
+
+            migrationBuilder.DropTable(
+                name: "Users");
         }
     }
 }

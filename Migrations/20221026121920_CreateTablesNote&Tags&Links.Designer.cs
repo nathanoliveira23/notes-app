@@ -11,48 +11,13 @@ using Notes.Data;
 namespace Notes.Migrations
 {
     [DbContext(typeof(NotesDbContext))]
-    [Migration("20221025195502_CreateTableNotesTagsLinks")]
-    partial class CreateTableNotesTagsLinks
+    [Migration("20221026121920_CreateTablesNote&Tags&Links")]
+    partial class CreateTablesNoteTagsLinks
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.10");
-
-            modelBuilder.Entity("Notes.Models.User", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Avatar")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("CreatedAt")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("UpdatedAt")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Users");
-                });
 
             modelBuilder.Entity("Notes.Models.Link", b =>
                 {
