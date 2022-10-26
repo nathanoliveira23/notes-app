@@ -6,5 +6,6 @@ namespace Notes.Repository
     {
         public Task SaveNote(Note note);
         public Note GetNoteId(int id);
+        public Task RemoveNote(Note note);
     }
 }

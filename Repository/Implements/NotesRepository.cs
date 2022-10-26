@@ -19,5 +19,10 @@ namespace Notes.Repository.Implements
         return _context.Notes.FirstOrDefault(x => x.Id == id);
     }
 
+    public async Task RemoveNote(Note note)
+    {
+        _context.Notes.Remove(note);
+        await _context.SaveChangesAsync();
+    }
   }
 }
