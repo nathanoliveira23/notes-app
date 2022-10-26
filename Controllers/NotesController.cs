@@ -34,35 +34,10 @@ namespace Notes.Controllers
                     Links = createNoteDTO.Links,
                     User = user,
                 };
-
+                
                 _notesRepository.SaveNote(note);
 
-                // Note note = new()
-                // {
-                //    Title = createNoteDTO.Title,
-                //    Description = createNoteDTO.Description,
-                //    User = user
-                // };
-
-                // Tag tag = new()
-                // {
-                //     Name = createNoteDTO.Tags.ToString(),
-                //     User = user,
-                //     Note = _notesRepository.GetNoteId(note.Id),
-                // };
-
-                // Link link = new()
-                // {
-                //     Note = _notesRepository.GetNoteId(note.Id),
-                //     Text = createNoteDTO.Links.ToString()
-                // };
-
-                // _notesRepository.SaveNote(note);
-                // _tagsRepository.SaveTag(tag);
-                // _linksRepository.SaveLink(link);
-
-                // return Created(string.Empty, note);
-                return Ok(note);
+                return Created(string.Empty, note);
             }
             catch (Exception ex)
             {
