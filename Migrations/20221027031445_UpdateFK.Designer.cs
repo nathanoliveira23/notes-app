@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Notes.Data;
 
@@ -10,14 +11,15 @@ using Notes.Data;
 namespace Notes.Migrations
 {
     [DbContext(typeof(NotesDbContext))]
-    partial class NotesDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221027031445_UpdateFK")]
+    partial class UpdateFK
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.10");
 
-            modelBuilder.Entity("Notes.Models.Link", b =>
+             modelBuilder.Entity("Notes_API.Models.Link", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -38,7 +40,7 @@ namespace Notes.Migrations
                     b.ToTable("Links");
                 });
 
-            modelBuilder.Entity("Notes.Models.Note", b =>
+            modelBuilder.Entity("Notes_API.Models.Note", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -68,7 +70,7 @@ namespace Notes.Migrations
                     b.ToTable("Notes");
                 });
 
-            modelBuilder.Entity("Notes.Models.Tag", b =>
+            modelBuilder.Entity("Notes_API.Models.Tag", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -89,7 +91,7 @@ namespace Notes.Migrations
                     b.ToTable("Tags");
                 });
 
-            modelBuilder.Entity("Notes.Models.User", b =>
+            modelBuilder.Entity("Notes_API.Models.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -121,9 +123,9 @@ namespace Notes.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Notes.Models.Link", b =>
+            modelBuilder.Entity("Notes_API.Models.Link", b =>
                 {
-                    b.HasOne("Notes.Models.Note", "Note")
+                    b.HasOne("Notes_API.Models.Note", "Note")
                         .WithMany("Links")
                         .HasForeignKey("NoteId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -132,9 +134,9 @@ namespace Notes.Migrations
                     b.Navigation("Note");
                 });
 
-            modelBuilder.Entity("Notes.Models.Note", b =>
+            modelBuilder.Entity("Notes_API.Models.Note", b =>
                 {
-                    b.HasOne("Notes.Models.User", "User")
+                    b.HasOne("Notes_API.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -143,9 +145,9 @@ namespace Notes.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Notes.Models.Tag", b =>
+            modelBuilder.Entity("Notes_API.Models.Tag", b =>
                 {
-                    b.HasOne("Notes.Models.Note", "Note")
+                    b.HasOne("Notes_API.Models.Note", "Note")
                         .WithMany("Tags")
                         .HasForeignKey("NoteId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -154,7 +156,7 @@ namespace Notes.Migrations
                     b.Navigation("Note");
                 });
 
-            modelBuilder.Entity("Notes.Models.Note", b =>
+            modelBuilder.Entity("Notes_API.Models.Note", b =>
                 {
                     b.Navigation("Links");
 

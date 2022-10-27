@@ -7,7 +7,7 @@ namespace Notes.DTOs.NoteDTOs
         public string Title { get; set; }
         public string Description { get; set; }   
         public int UserId { get; set; }
-        public IList<Tag> Tags { get; set; }
-        public IList<Link> Links { get; set; }
+        public ICollection<Tag> Tags { get; set; }
+        public ICollection<Link> Links { get; set; }
     }
 }
