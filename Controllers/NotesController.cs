@@ -21,7 +21,7 @@ namespace Notes.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateNote(CreateNoteDTO createNoteDTO)
+        public async Task<IActionResult> CreateNote(CreateNoteDTO createNoteDTO)
         {
             User user = ReadToken();
             try
@@ -35,7 +35,7 @@ namespace Notes.Controllers
                     User = user,
                 };
                 
-                _notesRepository.SaveNote(note);
+                await _notesRepository.SaveNoteAsync(note);
 
                 return Created(string.Empty, note);
             }
@@ -51,7 +51,7 @@ namespace Notes.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteNote(int id)
+        public async Task<IActionResult> DeleteNote(int id)
         {
             User user = ReadToken();
             var noteId = _notesRepository.GetNoteId(id);
@@ -60,7 +60,7 @@ namespace Notes.Controllers
                 return NotFound(new AppError("Não foi possível encontrar a nota informada."));
             try
             {
-                _notesRepository.RemoveNote(noteId);
+                await _notesRepository.RemoveNoteAsync(noteId);
 
                 return NoContent();
             }

@@ -21,7 +21,7 @@ namespace Notes.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public IActionResult CreateUser(UserDTO userDTO)
+        public async Task<IActionResult> CreateUser(UserDTO userDTO)
         {
             try
             {
@@ -37,7 +37,7 @@ namespace Notes.Controllers
 
                 if (!_userRepository.EmailVerify(userDTO.Email))
                 {
-                    _userRepository.SaveUser(user);
+                    await _userRepository.SaveUserAsync(user);
                 }
                 else
                 {
@@ -80,7 +80,7 @@ namespace Notes.Controllers
         }
 
         [HttpDelete("delete")]
-        public IActionResult DeleteUser()
+        public async Task<IActionResult> DeleteUser()
         {
             try
             {
@@ -88,7 +88,7 @@ namespace Notes.Controllers
 
                 if (userId != null)
                 {
-                    _userRepository.Delete(userId);
+                    await _userRepository.DeleteAsync(userId);
                 }
                 else
                 {
@@ -109,7 +109,7 @@ namespace Notes.Controllers
         }
 
         [HttpPut("update")]
-        public IActionResult UpdateUser(UserUpdateDTO userUpdateDTO, int id)
+        public async Task<IActionResult> UpdateUser(UserUpdateDTO userUpdateDTO, int id)
         {
             try
             {
@@ -130,7 +130,7 @@ namespace Notes.Controllers
 
                 dbUserId.Password = Encrypt.EncryptPassword(userUpdateDTO.NewPassword);
 
-                _userRepository.Update(dbUserId);
+                await _userRepository.UpdateAsync(dbUserId);
 
                 return Ok(dbUserId);
             }

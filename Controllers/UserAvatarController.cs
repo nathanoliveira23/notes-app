@@ -42,7 +42,7 @@ namespace Notes.Controllers
             dbUser.Avatar = userAvatar.Title;
             dbUser.Password = dbUser.Password;
 
-            _userRepository.Update(dbUser);
+            await _userRepository.UpdateAsync(dbUser);
 
             return NoContent();
         }
