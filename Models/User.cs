@@ -9,9 +9,7 @@ namespace Notes.Models
         public string Email { get; set; }
         public string Password { get; set; }
         public string? Avatar { get; set; }
-        // public string CreatedAt { get => this._date.ToString("dd/MM/yyyy HH:mm"); set {} }
-        // public string UpdatedAt { get => this._date.ToString("dd/MM/yyyy HH:mm"); set {} }
-        public DateTime CreatedAt { get => DateTime.Now; set{} }
-        public DateTime UpdatedAt { get => DateTime.Now; set{} }
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime UpdatedAt { get; set; } = DateTime.Now;
     }
 }
