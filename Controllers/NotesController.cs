@@ -7,7 +7,7 @@ using Notes.Utils;
 namespace Notes.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/notes")]
     public class NotesController : BaseController
     {
         private readonly INotesRepository _notesRepository;

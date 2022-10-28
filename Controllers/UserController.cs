@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace Notes.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/user")]
     public class UserController : BaseController
     {
         private readonly ILogger<UserController> _logger;

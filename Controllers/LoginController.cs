@@ -9,7 +9,7 @@ using Notes.Services;
 namespace Notes.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/login")]
     public class LoginController : ControllerBase
     {
         private readonly ILogger<UserController> _logger;

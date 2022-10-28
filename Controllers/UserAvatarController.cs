@@ -5,7 +5,7 @@ using Notes.Repository;
 namespace Notes.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/avatar")]
     public class UserAvatarController : BaseController
     {
         public UserAvatarController(IUserRepository userRepository) : base(userRepository) { }
