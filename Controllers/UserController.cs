@@ -12,7 +12,6 @@ namespace Notes.Controllers
     public class UserController : BaseController
     {
         private readonly ILogger<UserController> _logger;
-   
 
         public UserController(ILogger<UserController> logger, IUserRepository userRepository) : base(userRepository)
         {
@@ -92,7 +91,7 @@ namespace Notes.Controllers
                 }
                 else
                 {
-                    BadRequest(new AppError("Usuário não encontrado."));
+                    NotFound(new AppError("Usuário não encontrado."));
                 }
 
                 return NoContent();
@@ -116,7 +115,7 @@ namespace Notes.Controllers
                 User dbUserId = ReadToken();
 
                 if (dbUserId == null)
-                    return BadRequest(new AppError("Usuário não encontrado."));
+                    return NotFound(new AppError("Usuário não encontrado."));
 
                 dbUserId.Name = userUpdateDTO.Name;
                 dbUserId.Email = userUpdateDTO.Email;
