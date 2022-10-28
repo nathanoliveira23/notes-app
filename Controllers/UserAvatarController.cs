@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Notes.Models;
 using Notes.Repository;
+using Notes.Services;
+using Notes.Utils;
 
 namespace Notes.Controllers
 {
@@ -8,43 +10,39 @@ namespace Notes.Controllers
     [Route("api/avatar")]
     public class UserAvatarController : BaseController
     {
-        public UserAvatarController(IUserRepository userRepository) : base(userRepository) { }
+        private readonly ILogger<UserAvatarController> _logger;
+        public UserAvatarController(IUserRepository userRepository, ILogger<UserAvatarController> logger) : base(userRepository) 
+        {
+            _logger = logger;
+        }
 
         [HttpPatch("upload")]
         public async Task<IActionResult> AvatarUpload(IFormFile avatar)
         {
-            // Upload file
-            string currentPath = Directory.GetCurrentDirectory();
-
-            if (!Directory.Exists(Path.Combine(currentPath, "Temp")))
-                Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "Temp"));
-
-            Avatar userAvatar = new()
+            try
             {
-                Title = $"{Guid.NewGuid()} - {avatar.FileName}",
-                Url = Path.Combine(currentPath, "Temp", avatar.FileName),
-                ContentType = avatar.ContentType
-            };
+                // Upload file
+                Avatar userAvatar = new();
 
-            string imagePath = Path.Combine(Directory.GetCurrentDirectory(), "Temp", userAvatar.Title);
+                await FileUploadService.Upload(avatar, userAvatar);
 
-            using (var fs = new FileStream(imagePath, FileMode.Create))
-            {
-                await avatar.CopyToAsync(fs);
+                // Save the image name in the database
+                User dbUser = ReadToken();
+                dbUser.Avatar = userAvatar.Title;
+
+                await _userRepository.UpdateAsync(dbUser);
+
+                return NoContent();
             }
-
-
-            // Save the image name in the database
-            User dbUser = ReadToken();
-
-            dbUser.Name = dbUser.Name;
-            dbUser.Email = dbUser.Email;
-            dbUser.Avatar = userAvatar.Title;
-            dbUser.Password = dbUser.Password;
-
-            await _userRepository.UpdateAsync(dbUser);
-
-            return NoContent();
+            catch (Exception ex)
+            {
+                _logger.LogError($"Ocorreu um erro durante atualização da foto de usuário: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, new AppError()
+                {
+                    Message = "Ocorreu um erro ao atualizar a foto de usuário.",
+                    Status = StatusCodes.Status500InternalServerError
+                });
+            }
         }
     }
 }
