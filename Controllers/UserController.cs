@@ -24,13 +24,10 @@ namespace Notes.Controllers
         {
             try
             {
-                if (userDTO.Email.Contains(" "))
-                    return BadRequest(new AppError("O E-mail não pode ter espaços em branco."));
-
                 User user = new()
                 {
                     Name = userDTO.Name,
-                    Email = userDTO.Email.ToLower(),
+                    Email = userDTO.Email.ToLower().Replace(" ", ""),
                     Password = Encrypt.EncryptPassword(userDTO.Password)
                 };
 
